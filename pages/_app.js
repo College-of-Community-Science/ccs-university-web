@@ -3,8 +3,7 @@ import AOS from "aos"
 
 import { Inter } from '@next/font/google'
 import 'aos/dist/aos.css'
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
+import 'react-multi-carousel/lib/styles.css'
 import '@/styles/globals.scss'
 
 import Layout from '@/components/Layout/Layout'

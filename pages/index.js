@@ -1,10 +1,14 @@
+import { useEffect, useState } from 'react'
+import Carousel from 'react-multi-carousel'
+
+import { FiArrowUpRight, FiArrowRight } from 'react-icons/fi'
+import { SlArrowRight, SlArrowLeft } from 'react-icons/sl'
+
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import styles from '@/styles/Home.module.scss'
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
 
 import campusImg from '@/assets/images/campus.jpg'
 import facultyImage1 from '@/assets/images/facultyImage1.jpg'
@@ -12,21 +16,79 @@ import research1 from '@/assets/images/research1.jpg'
 import research2 from '@/assets/images/research2.jpg'
 import research3 from '@/assets/images/research3.jpg'
 
-import { FiArrowUpRight } from 'react-icons/fi'
-
-import Slider from "react-slick"
-
 export default function Home() {
-  const sliderSettings = {
-    dots: false,
-    infinite: false,
-    speed: 750,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    arrows: false,
-    focusOnSelect: false,
-    easing: 'ease'
+  const [courseCarouselLevel, setCourseCarouselLevel] = useState(0)
+
+  const CarouselArrowButtons = ({ props }) => {
+    console.log("PROPS: ", props);
+    return (
+      <div>
+        <button>{">"}</button>
+        <button>{"<"}</button>
+        <button>{"-"}</button>
+      </div>
+    )
+  }
+
+  const ButtonGroup = ({ next, previous, goToSlide, resetState, ...rest }) => {
+    useEffect(() => {
+      if (resetState)
+        goToSlide(0);
+    }, [resetState])
+    return (
+      <div className={styles.carouselBtnGroup}>
+        <button onClick={() => previous()}><SlArrowLeft /></button>
+        <button onClick={() => next()}><SlArrowRight /></button>
+      </div>    
+    );
   };
+
+  const carouselSettings = {
+    ssr: true,
+    draggable: true,
+    partialVisible: true,
+    showDots: false,
+    slidesToSlide: 1,
+    swipeable: false,
+    containerClass: styles.carouselContainer,
+    sliderClass: styles.carouselSlider,
+    responsive: {
+      desktop: {
+        breakpoint: { max: 3000, min: 1024 },
+        items: 3,
+        slidesToSlide: 1,
+        partialVisibilityGutter: 40
+      },
+      tablet: {
+        breakpoint: { max: 1024, min: 464 },
+        items: 2,
+        slidesToSlide: 1  
+      },
+      mobile: {
+        breakpoint: { max: 464, min: 0 },
+        items: 1,
+        slidesToSlide: 1
+      }
+    }
+  }
+
+  const bachelorCourseData = [
+    {
+      title: "Food and Nutrition"
+    },
+    {
+      title: "Human Development and Family Studies"
+    },
+    {
+      title: "Extension Education & Communication Management"
+    },
+    {
+      title: "Textile and Apparel Designing"
+    },
+    {
+      title: "Resource Management and Consumer Science"
+    }
+  ]
 
   return (
     <>
@@ -59,7 +121,7 @@ export default function Home() {
         </div>
         <div className={styles.infoGrid}>
 
-          <Image src={facultyImage1} width='1rem' height={'2rem'} data-aos="fade-up"/>
+          <Image src={facultyImage1} width='1rem' height={'2rem'} data-aos="fade-up" />
           <div data-aos="fade-up" data-aos-delay="250">
             <h1>Faculty of Community Science</h1>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur cumque aliquam nisi debitis consectetur. Corrupti suscipit necessitatibus rem eligendi blanditiis?</p>
@@ -71,7 +133,7 @@ export default function Home() {
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur cumque aliquam nisi debitis consectetur. Corrupti suscipit necessitatibus rem eligendi blanditiis?</p>
             <Link href="#">Learn More</Link>
           </div>
-          <Image src={facultyImage1} data-aos="fade-up" data-aos-delay="250"/>
+          <Image src={facultyImage1} data-aos="fade-up" data-aos-delay="250" />
 
         </div>
 
@@ -81,44 +143,44 @@ export default function Home() {
       {/* Research Section */}
       <section className={styles.researchSection}>
         <div className={styles.header}>
-          <h2>OUR RECENT RESEARCH & <br/> PUBLICATIONS</h2>
+          <h2>OUR RECENT RESEARCH & <br /> PUBLICATIONS</h2>
           <p>RESEARCH</p>
         </div>
 
-        <div className={styles.researchSliderContainer}>
-          <Slider {...sliderSettings}>
+        {/* <div className={styles.researchSliderContainer}> */}
+          <Carousel {...carouselSettings} arrows={false} renderButtonGroupOutside={true} customButtonGroup={<ButtonGroup resetState={courseCarouselLevel} />}>
             <div className={styles.researchCard} data-aos="fade-left">
               <Image src={research1} />
               <h1>Food & Nutrition Research Title</h1>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
             </div>
             <div className={styles.researchCard} data-aos="fade-left" data-aos-delay="250">
-              <Image src={research2}/>
+              <Image src={research2} />
               <h1>Human Development & Family Studies</h1>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
             </div>
             <div className={styles.researchCard} data-aos="fade-left" data-aos-delay="500">
-              <Image src={research3}/>
+              <Image src={research3} />
               <h1>Extension Education & Communication Management</h1>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
             </div>
-            <div className={styles.researchCard}>
+            <div className={styles.researchCard} data-aos="fade-left" data-aos-delay="750">
               <Image src={research1} />
               <h1>Food & Nutrition Research Title</h1>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
             </div>
             <div className={styles.researchCard}>
-              <Image src={research2}/>
+              <Image src={research2} />
               <h1>Human Development & Family Studies</h1>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
             </div>
             <div className={styles.researchCard}>
-              <Image src={research3}/>
+              <Image src={research3} />
               <h1>Extension Education & Communication Management</h1>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
             </div>
-          </Slider>
-        </div>
+          </Carousel>
+        {/* </div> */}
 
         <Link href="#" className={styles.moreBtn}>SEE ALL RESEARCH <FiArrowUpRight /></Link>
       </section>
@@ -126,8 +188,55 @@ export default function Home() {
       {/* Academic Section */}
       <section className={styles.academicSection}>
         <div className={styles.header}>
-          <h2>ACADEMIC PROGRAMS</h2>
           <p>ACADEMICS</p>
+          <span>
+            <h2>ACADEMIC PROGRAMS</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. <br /> Vel, distinctio aperiam! Ab, corporis. Saepe, distinctio!</p>
+          </span>
+        </div>
+
+        <div className={styles.courseContainer}>
+          <ul className={styles.courseTabs}>
+            <li className={courseCarouselLevel === 0 ? styles.selected : ''} onClick={() => setCourseCarouselLevel(0)}>/Bachelor</li>
+            <li className={courseCarouselLevel === 1 ? styles.selected : ''} onClick={() => setCourseCarouselLevel(1)}>/Master</li>
+            <li className={courseCarouselLevel === 2 ? styles.selected : ''} onClick={() => setCourseCarouselLevel(2)}>/PhD</li>
+          </ul>
+
+          <Carousel {...carouselSettings} arrows={false} renderButtonGroupOutside={true} customButtonGroup={<ButtonGroup resetState={courseCarouselLevel} />}>
+            {courseCarouselLevel === 0 && bachelorCourseData.map((item, i) => {
+              return (
+                <div className={styles.courseCard}  data-aos="fade-left" data-aos-delay={250 * i}>
+                  <h1>{item.title}</h1>
+                  <div className={styles.cardFooter}>
+                    <span>/Bachelor</span>
+                    <Link href="#"><FiArrowRight /></Link>
+                  </div>
+                </div>
+              )
+            })}
+            {courseCarouselLevel === 1 && bachelorCourseData.map((item, i) => {
+              return (
+                <div className={styles.courseCard}  data-aos="fade-left" data-aos-delay={250 * i}>
+                  <h1>{item.title}</h1>
+                  <div className={styles.cardFooter}>
+                    <span>/Master</span>
+                    <Link href="#"><FiArrowRight /></Link>
+                  </div>
+                </div>
+              )
+            })}
+            {courseCarouselLevel === 2 && bachelorCourseData.map((item, i) => {
+              return (
+                <div className={styles.courseCard}  data-aos="fade-left" data-aos-delay={250 * i}>
+                  <h1>{item.title}</h1>
+                  <div className={styles.cardFooter}>
+                    <span>/Phd</span>
+                    <Link href="#"><FiArrowRight /></Link>
+                  </div>
+                </div>
+              )
+            })}
+          </Carousel>
         </div>
       </section>
     </>
