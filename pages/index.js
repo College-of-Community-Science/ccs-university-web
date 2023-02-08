@@ -100,7 +100,7 @@ export default function Home() {
 
       <section className={styles.introCarousel}>
         <div className={styles.heroImage}>
-          <Image src={campusImg} />
+          <Image src={campusImg} alt="university campus"/>
         </div>
         <div className={styles.infoContainer}>
           <span>
@@ -121,7 +121,7 @@ export default function Home() {
         </div>
         <div className={styles.infoGrid}>
 
-          <Image src={facultyImage1} width='1rem' height={'2rem'} data-aos="fade-up" />
+          <Image src={facultyImage1} alt="faculty image" width='1rem' height={'2rem'} data-aos="fade-up" />
           <div data-aos="fade-up" data-aos-delay="250">
             <h1>Faculty of Community Science</h1>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur cumque aliquam nisi debitis consectetur. Corrupti suscipit necessitatibus rem eligendi blanditiis?</p>
@@ -133,7 +133,7 @@ export default function Home() {
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur cumque aliquam nisi debitis consectetur. Corrupti suscipit necessitatibus rem eligendi blanditiis?</p>
             <Link href="#">Learn More</Link>
           </div>
-          <Image src={facultyImage1} data-aos="fade-up" data-aos-delay="250" />
+          <Image src={facultyImage1} alt="faculty image" data-aos="fade-up" data-aos-delay="250" />
 
         </div>
 
@@ -150,32 +150,32 @@ export default function Home() {
         {/* <div className={styles.researchSliderContainer}> */}
           <Carousel {...carouselSettings} arrows={false} renderButtonGroupOutside={true} customButtonGroup={<ButtonGroup resetState={courseCarouselLevel} />}>
             <div className={styles.researchCard} data-aos="fade-left">
-              <Image src={research1} />
+              <Image src={research1} alt="research image"/>
               <h1>Food & Nutrition Research Title</h1>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
             </div>
             <div className={styles.researchCard} data-aos="fade-left" data-aos-delay="250">
-              <Image src={research2} />
+              <Image src={research2} alt="research image"/>
               <h1>Human Development & Family Studies</h1>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
             </div>
             <div className={styles.researchCard} data-aos="fade-left" data-aos-delay="500">
-              <Image src={research3} />
+              <Image src={research3} alt="research image"/>
               <h1>Extension Education & Communication Management</h1>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
             </div>
             <div className={styles.researchCard} data-aos="fade-left" data-aos-delay="750">
-              <Image src={research1} />
+              <Image src={research1} alt="research image"/>
               <h1>Food & Nutrition Research Title</h1>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
             </div>
             <div className={styles.researchCard}>
-              <Image src={research2} />
+              <Image src={research2} alt="research image"/>
               <h1>Human Development & Family Studies</h1>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
             </div>
             <div className={styles.researchCard}>
-              <Image src={research3} />
+              <Image src={research3} alt="research image"/>
               <h1>Extension Education & Communication Management</h1>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
             </div>
@@ -205,7 +205,7 @@ export default function Home() {
           <Carousel {...carouselSettings} arrows={false} renderButtonGroupOutside={true} customButtonGroup={<ButtonGroup resetState={courseCarouselLevel} />}>
             {courseCarouselLevel === 0 && bachelorCourseData.map((item, i) => {
               return (
-                <div className={styles.courseCard}  data-aos="fade-left" data-aos-delay={250 * i}>
+                <div className={styles.courseCard} key={i} data-aos="fade-left" data-aos-delay={250 * i}>
                   <h1>{item.title}</h1>
                   <div className={styles.cardFooter}>
                     <span>/Bachelor</span>
@@ -216,7 +216,7 @@ export default function Home() {
             })}
             {courseCarouselLevel === 1 && bachelorCourseData.map((item, i) => {
               return (
-                <div className={styles.courseCard}  data-aos="fade-left" data-aos-delay={250 * i}>
+                <div className={styles.courseCard} key={i} data-aos="fade-left" data-aos-delay={250 * i}>
                   <h1>{item.title}</h1>
                   <div className={styles.cardFooter}>
                     <span>/Master</span>
@@ -227,7 +227,7 @@ export default function Home() {
             })}
             {courseCarouselLevel === 2 && bachelorCourseData.map((item, i) => {
               return (
-                <div className={styles.courseCard}  data-aos="fade-left" data-aos-delay={250 * i}>
+                <div className={styles.courseCard} key={i} data-aos="fade-left" data-aos-delay={250 * i}>
                   <h1>{item.title}</h1>
                   <div className={styles.cardFooter}>
                     <span>/Phd</span>
