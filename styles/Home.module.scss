@@ -401,6 +401,10 @@
 
       .carouselSlider {
         gap: 2rem;
+
+        li:last-of-type {
+          margin-right: 20%;
+        }
       }
     }
 
@@ -443,6 +447,7 @@
       display: grid;
       grid-template-rows: 1fr auto;
 
+      height: 17rem;
       aspect-ratio: 16 / 10;
       padding: 1rem;
 

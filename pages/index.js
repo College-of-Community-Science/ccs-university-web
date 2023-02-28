@@ -11,6 +11,7 @@ import Link from 'next/link'
 import styles from '@/styles/Home.module.scss'
 
 import campusImg from '@/assets/images/campus.jpg'
+import facultyImage from '@/assets/images/facultyImage.jpg'
 import facultyImage1 from '@/assets/images/facultyImage1.jpg'
 import research1 from '@/assets/images/research1.jpg'
 import research2 from '@/assets/images/research2.jpg'
@@ -21,17 +22,6 @@ import Modal from '@/components/Modal/Modal'
 export default function Home() {
   const [courseCarouselLevel, setCourseCarouselLevel] = useState(0);
   const [showModal, setShowModal] = useState(false);
-
-  const CarouselArrowButtons = ({ props }) => {
-    console.log("PROPS: ", props);
-    return (
-      <div>
-        <button>{">"}</button>
-        <button>{"<"}</button>
-        <button>{"-"}</button>
-      </div>
-    )
-  }
 
   const ButtonGroup = ({ next, previous, goToSlide, resetState, ...rest }) => {
     useEffect(() => {
@@ -57,18 +47,23 @@ export default function Home() {
     sliderClass: styles.carouselSlider,
     responsive: {
       desktop: {
-        breakpoint: { max: 3000, min: 1024 },
-        items: 3,
+        breakpoint: { max: 3000, min: 1250 },
+        items: 2.5,
         slidesToSlide: 1,
         partialVisibilityGutter: 40
       },
-      tablet: {
-        breakpoint: { max: 1024, min: 464 },
+      smallDesktop : {
+        breakpoint: { max: 1250, min: 920 },
         items: 2,
-        slidesToSlide: 1  
+        slidesToSlide: 1,
+      },
+      tablet: {
+        breakpoint: { max: 920, min: 680 },
+        items: 1.5,
+        slidesToSlide: 1 
       },
       mobile: {
-        breakpoint: { max: 464, min: 0 },
+        breakpoint: { max: 680, min: 0 },
         items: 1,
         slidesToSlide: 1
       }
@@ -77,20 +72,28 @@ export default function Home() {
 
   const bachelorCourseData = [
     {
-      title: "Food and Nutrition"
+      title: "Community Science (Hons)"
     },
     {
-      title: "Human Development and Family Studies"
-    },
-    {
-      title: "Extension Education & Communication Management"
-    },
-    {
-      title: "Textile and Apparel Designing"
-    },
-    {
-      title: "Resource Management and Consumer Science"
+      title: "Food Nutrition and Dietetics (Hons)"
     }
+  ]
+  const masterCourseData = [
+    {
+      title: "Food & Nutrition (FN)"
+    },
+    {
+      title: "Extension Education and Communication Management (EECM)"
+    },
+    {
+      title: "Resource Management & Consumer Science (RMCS)"
+    },
+    {
+      title: "Human Development & Family Studies (HDFS)"
+    },
+    {
+      title: "Textile & Apparel Design (TAD)"
+    },
   ]
 
   return (
@@ -125,7 +128,7 @@ export default function Home() {
         </div>
         <div className={styles.infoGrid}>
 
-          <Image src={facultyImage1} alt="faculty image" width='1rem' height={'2rem'} data-aos="fade-up" />
+          <Image src={facultyImage} alt="faculty image" width='1rem' height={'2rem'} data-aos="fade-up" />
           <div data-aos="fade-up" data-aos-delay="250">
             <h1>Faculty of Community Science</h1>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur cumque aliquam nisi debitis consectetur. Corrupti suscipit necessitatibus rem eligendi blanditiis?</p>
@@ -203,44 +206,54 @@ export default function Home() {
           <ul className={styles.courseTabs}>
             <li className={courseCarouselLevel === 0 ? styles.selected : ''} onClick={() => setCourseCarouselLevel(0)}>/Bachelor</li>
             <li className={courseCarouselLevel === 1 ? styles.selected : ''} onClick={() => setCourseCarouselLevel(1)}>/Master</li>
-            <li className={courseCarouselLevel === 2 ? styles.selected : ''} onClick={() => setCourseCarouselLevel(2)}>/PhD</li>
+            <li className={courseCarouselLevel === 2 ? styles.selected : ''} onClick={() => setCourseCarouselLevel(2)}>/Ph.D</li>
           </ul>
 
-          <Carousel {...carouselSettings} arrows={false} renderButtonGroupOutside={true} customButtonGroup={<ButtonGroup resetState={courseCarouselLevel} />}>
-            {courseCarouselLevel === 0 && bachelorCourseData.map((item, i) => {
-              return (
-                <div className={styles.courseCard} key={i} data-aos="fade-left" data-aos-delay={250 * i}>
-                  <h1>{item.title}</h1>
-                  <div className={styles.cardFooter}>
-                    <span>/Bachelor</span>
-                    <Link href="#"><FiArrowRight /></Link>
+          {courseCarouselLevel == 0 &&
+            <Carousel {...carouselSettings} arrows={false} renderButtonGroupOutside={true} customButtonGroup={<ButtonGroup resetState={courseCarouselLevel} />}>
+              {bachelorCourseData.map((item, i) => {
+                return (
+                  <div className={styles.courseCard} key={i} data-aos="fade-left" data-aos-delay={250 * i}>
+                    <h1>{item.title}</h1>
+                    <div className={styles.cardFooter}>
+                      <span>B.Sc</span>
+                      <Link href="#"><FiArrowRight /></Link>
+                    </div>
                   </div>
-                </div>
-              )
-            })}
-            {courseCarouselLevel === 1 && bachelorCourseData.map((item, i) => {
-              return (
-                <div className={styles.courseCard} key={i} data-aos="fade-left" data-aos-delay={250 * i}>
-                  <h1>{item.title}</h1>
-                  <div className={styles.cardFooter}>
-                    <span>/Master</span>
-                    <Link href="#"><FiArrowRight /></Link>
+                )
+              })}
+            </Carousel>
+          }
+          {courseCarouselLevel == 1 &&
+            <Carousel {...carouselSettings} arrows={false} renderButtonGroupOutside={true} customButtonGroup={<ButtonGroup resetState={courseCarouselLevel} />}>
+              {masterCourseData.map((item, i) => {
+                return (
+                  <div className={styles.courseCard} key={i} data-aos="fade-left" data-aos-delay={250 * i}>
+                    <h1>{item.title}</h1>
+                    <div className={styles.cardFooter}>
+                      <span>M.Sc</span>
+                      <Link href="#"><FiArrowRight /></Link>
+                    </div>
                   </div>
-                </div>
-              )
-            })}
-            {courseCarouselLevel === 2 && bachelorCourseData.map((item, i) => {
-              return (
-                <div className={styles.courseCard} key={i} data-aos="fade-left" data-aos-delay={250 * i}>
-                  <h1>{item.title}</h1>
-                  <div className={styles.cardFooter}>
-                    <span>/Phd</span>
-                    <Link href="#"><FiArrowRight /></Link>
+                )
+              })}
+            </Carousel>
+          }
+          {courseCarouselLevel === 2 &&
+            <Carousel {...carouselSettings} arrows={false} renderButtonGroupOutside={true} customButtonGroup={<ButtonGroup resetState={courseCarouselLevel} />}>
+              {masterCourseData.map((item, i) => {
+                return (
+                  <div className={styles.courseCard} key={i} data-aos="fade-left" data-aos-delay={250 * i}>
+                    <h1>{item.title}</h1>
+                    <div className={styles.cardFooter}>
+                      <span>Ph.D</span>
+                      <Link href="#"><FiArrowRight /></Link>
+                    </div>
                   </div>
-                </div>
-              )
-            })}
-          </Carousel>
+                )
+              })}
+            </Carousel>
+          }
         </div>
       </section>
       <Modal show={showModal} setShow={setShowModal}/>
