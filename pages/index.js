@@ -11,7 +11,7 @@ import Link from 'next/link'
 import styles from '@/styles/Home.module.scss'
 
 import campusImg from '@/assets/images/campus.jpg'
-import facultyImage from '@/assets/images/facultyImage.jpg'
+import facultyImage from '@/assets/images/facultyImage.png'
 import facultyImage1 from '@/assets/images/facultyImage1.jpg'
 import research1 from '@/assets/images/research1.jpg'
 import research2 from '@/assets/images/research2.jpg'
