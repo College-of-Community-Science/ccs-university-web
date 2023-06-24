@@ -35,3 +35,43 @@ p, h1, h2, h3, h4, h5, h6 {
   // --theme-color: #16504a;
   --theme-color: hsl(0, 0%, 5%);
 }
+
+footer {
+  width: 100%;
+  background-color: #0d0d0d;
+  color: #FFF;
+
+  padding: 2.5rem var(--page-padding) 0rem;
+
+  .footer-grid {
+    display: flex;
+    gap: 1rem;
+    
+    margin-bottom: 1.5rem;
+
+    > div {
+      h2 {
+        font-weight: 400;
+        font-size: 1.5rem;
+        padding-block: 0.5rem;
+      }
+      p, a {
+        padding-block: 0.5rem;
+        line-height: 1.75rem;
+        font-size: 0.9rem;
+        color: #FFF;
+        text-decoration: none;
+      }
+    }
+  }
+
+  > hr {
+    opacity: 0.5;
+  }
+
+  > p {
+    padding: 1.25rem 0rem;
+    font-size: 0.9rem;
+    opacity: 0.75;
+  }
+}

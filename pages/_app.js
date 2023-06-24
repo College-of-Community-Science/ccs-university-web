@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }) {
   }, []);
   
   return (
-    <Layout>
+    <Layout fontClass={font.className}>
       <main className={font.className}>
         <Component {...pageProps} />
       </main>
