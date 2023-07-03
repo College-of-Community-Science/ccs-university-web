@@ -36,6 +36,10 @@ p, h1, h2, h3, h4, h5, h6 {
   --theme-color: hsl(0, 0%, 5%);
 }
 
+* {
+  // outline: 1px solid hsla(0, 100%, 50%, 0.5);
+}
+
 footer {
   width: 100%;
   background-color: #0d0d0d;

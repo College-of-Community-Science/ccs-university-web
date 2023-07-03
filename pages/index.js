@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
 import Carousel from 'react-multi-carousel'
+import parse, { domToReact, attributesToProps } from 'html-react-parser';
 
 import { FiArrowUpRight, FiArrowRight } from 'react-icons/fi'
 import { SlArrowRight, SlArrowLeft } from 'react-icons/sl'
+import { AiOutlineLoading } from 'react-icons/ai'
+import { HiNewspaper } from 'react-icons/hi2'
 
 import Head from 'next/head'
 import Image from 'next/image'
@@ -18,10 +21,12 @@ import research2 from '@/assets/images/research2.jpg'
 import research3 from '@/assets/images/research3.jpg'
 import ScrollMessage from '@/components/ScrollMessage/ScrollMessage'
 import Modal from '@/components/Modal/Modal'
+import { getBlogPosts } from '@/utils/ApiUtils'
 
 export default function Home() {
   const [courseCarouselLevel, setCourseCarouselLevel] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [newsData, setNewsData] = useState(null);
 
   const ButtonGroup = ({ next, previous, goToSlide, resetState, ...rest }) => {
     useEffect(() => {
@@ -32,7 +37,7 @@ export default function Home() {
       <div className={styles.carouselBtnGroup}>
         <button onClick={() => previous()}><SlArrowLeft /></button>
         <button onClick={() => next()}><SlArrowRight /></button>
-      </div>    
+      </div>
     );
   };
 
@@ -52,7 +57,7 @@ export default function Home() {
         slidesToSlide: 1,
         partialVisibilityGutter: 40
       },
-      smallDesktop : {
+      smallDesktop: {
         breakpoint: { max: 1250, min: 920 },
         items: 2,
         slidesToSlide: 1,
@@ -60,7 +65,7 @@ export default function Home() {
       tablet: {
         breakpoint: { max: 920, min: 680 },
         items: 1.5,
-        slidesToSlide: 1 
+        slidesToSlide: 1
       },
       mobile: {
         breakpoint: { max: 680, min: 0 },
@@ -96,6 +101,20 @@ export default function Home() {
     },
   ]
 
+  async function getNews() {
+    try {
+      const data = await getBlogPosts();
+      console.log(data);
+      setNewsData(data.items || []);
+    } catch (e) {
+      setNewsData([]);
+    }
+  }
+
+  useEffect(() => {
+    getNews();
+  }, []);
+
   return (
     <>
       <Head>
@@ -106,7 +125,7 @@ export default function Home() {
 
       <section className={styles.introCarousel}>
         <div className={styles.heroImage}>
-          <Image src={campusImg} alt="university campus"/>
+          <Image src={campusImg} alt="university campus" />
         </div>
         <div className={styles.infoContainer}>
           <span>
@@ -114,10 +133,10 @@ export default function Home() {
             <p>विद्या ददाति विनयम</p>
           </span>
           <p>
-          College of Community Science Bikaner is an important constituent College of Swami Keshwanand Rajasthan Agricultural University, Bikaner. It is progressing leaps and bounds since its establishment in 1988.
+            College of Community Science Bikaner is an important constituent College of Swami Keshwanand Rajasthan Agricultural University, Bikaner. It is progressing leaps and bounds since its establishment in 1988.
           </p>
         </div>
-        <ScrollMessage onClickMethod={() => setShowModal(true)}/>
+        <ScrollMessage onClickMethod={() => setShowModal(true)} />
       </section>
 
       {/* Faculty Section */}
@@ -147,6 +166,64 @@ export default function Home() {
         <Link href="#" className={styles.moreBtn}>SEE ALL FACULTY <FiArrowUpRight /></Link>
       </section>
 
+      {/* News Section */}
+      <section className={styles.newsSection}>
+        <div className={styles.header}>
+          <p>NEWS & ARTICLES</p>
+          <h2>RECENT AND UPCOMING EVENTS</h2>
+        </div>
+
+        {!newsData ?
+          <div className={styles.newsLoading}>
+            <AiOutlineLoading />
+            LOADING NEWS
+          </div> : null
+        }
+
+        {(newsData && newsData.length) ?
+          <div className={styles.newsContainer}>
+            {newsData?.slice(0, 3).map((article, i) => (
+              <div className={styles.newsCard} data-aos="fade-left" data-aos-delay={250 * i} key={article.id}>
+
+                <p className={styles.date}>{new Date(article.updated).toLocaleString('en-IN', { dateStyle: 'full' })}</p>
+
+                <h1>{article.title}</h1>
+
+                <div className={styles.content}>
+                  {parse(article.content, {
+                    replace: (domNode) => {
+                      if (domNode.tagName === 'img') return <></>
+                      if (domNode.tagName === 'br') return <> </>
+                      if (domNode.tagName === 'a' && !domNode.childNodes.filter(e => e.name === 'img')) {
+                        return <a {...attributesToProps(domNode.attribs)} target='_Blank'>{domToReact(domNode.childNodes)}</a>
+                      }
+                    }
+                  })}
+                </div>
+
+                <div className={styles.cardFooter}>
+                  <div className={styles.labels}>
+                    {article.labels?.map((label) => (
+                      <span key={label}>{label}</span>
+                    ))}
+                  </div>
+                  <Link href={article.url} target='_Blank'><FiArrowRight /></Link>
+                </div>
+              </div>
+            ))}
+          </div> : null
+        }
+
+        {(newsData && newsData.length === 0) ?
+          <div className={styles.newsError}>
+            <HiNewspaper />
+            NO CURRENT NEWS
+          </div> : null
+        }
+
+        <Link href="https://news.ccsbikaner.in/" target='_Blank' className={styles.moreBtn}>SEE ALL NEWS<FiArrowUpRight /></Link>
+      </section>
+
       {/* Research Section */}
       <section className={styles.researchSection}>
         <div className={styles.header}>
@@ -155,38 +232,38 @@ export default function Home() {
         </div>
 
         {/* <div className={styles.researchSliderContainer}> */}
-          <Carousel {...carouselSettings} arrows={false} renderButtonGroupOutside={true} customButtonGroup={<ButtonGroup resetState={courseCarouselLevel} />}>
-            <div className={styles.researchCard} data-aos="fade-left">
-              <Image src={research1} alt="research image"/>
-              <h1>Food & Nutrition Research Title</h1>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
-            </div>
-            <div className={styles.researchCard} data-aos="fade-left" data-aos-delay="250">
-              <Image src={research2} alt="research image"/>
-              <h1>Human Development & Family Studies</h1>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
-            </div>
-            <div className={styles.researchCard} data-aos="fade-left" data-aos-delay="500">
-              <Image src={research3} alt="research image"/>
-              <h1>Extension Education & Communication Management</h1>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
-            </div>
-            <div className={styles.researchCard} data-aos="fade-left" data-aos-delay="750">
-              <Image src={research1} alt="research image"/>
-              <h1>Food & Nutrition Research Title</h1>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
-            </div>
-            <div className={styles.researchCard}>
-              <Image src={research2} alt="research image"/>
-              <h1>Human Development & Family Studies</h1>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
-            </div>
-            <div className={styles.researchCard}>
-              <Image src={research3} alt="research image"/>
-              <h1>Extension Education & Communication Management</h1>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
-            </div>
-          </Carousel>
+        <Carousel {...carouselSettings} arrows={false} renderButtonGroupOutside={true} customButtonGroup={<ButtonGroup resetState={courseCarouselLevel} />}>
+          <div className={styles.researchCard} data-aos="fade-left">
+            <Image src={research1} alt="research image" />
+            <h1>Food & Nutrition Research Title</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
+          </div>
+          <div className={styles.researchCard} data-aos="fade-left" data-aos-delay="250">
+            <Image src={research2} alt="research image" />
+            <h1>Human Development & Family Studies</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
+          </div>
+          <div className={styles.researchCard} data-aos="fade-left" data-aos-delay="500">
+            <Image src={research3} alt="research image" />
+            <h1>Extension Education & Communication Management</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
+          </div>
+          <div className={styles.researchCard} data-aos="fade-left" data-aos-delay="750">
+            <Image src={research1} alt="research image" />
+            <h1>Food & Nutrition Research Title</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
+          </div>
+          <div className={styles.researchCard}>
+            <Image src={research2} alt="research image" />
+            <h1>Human Development & Family Studies</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
+          </div>
+          <div className={styles.researchCard}>
+            <Image src={research3} alt="research image" />
+            <h1>Extension Education & Communication Management</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque laborum ex accusamus commodi possimus voluptas itaque id facere assumenda, architecto cupiditate aperiam magni sint alias.</p>
+          </div>
+        </Carousel>
         {/* </div> */}
 
         <Link href="#" className={styles.moreBtn}>SEE ALL RESEARCH <FiArrowUpRight /></Link>
@@ -196,10 +273,7 @@ export default function Home() {
       <section className={styles.academicSection}>
         <div className={styles.header}>
           <p>ACADEMICS</p>
-          <span>
-            <h2>ACADEMIC PROGRAMS</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. <br /> Vel, distinctio aperiam! Ab, corporis. Saepe, distinctio!</p>
-          </span>
+          <h2>ACADEMIC PROGRAMS</h2>
         </div>
 
         <div className={styles.courseContainer}>
@@ -256,7 +330,8 @@ export default function Home() {
           }
         </div>
       </section>
-      <Modal show={showModal} setShow={setShowModal}/>
+
+      <Modal show={showModal} setShow={setShowModal} />
     </>
   )
 }
