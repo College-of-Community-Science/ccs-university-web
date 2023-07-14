@@ -187,7 +187,7 @@ export default function Home() {
 
                 <p className={styles.date}>{new Date(article.updated).toLocaleString('en-IN', { dateStyle: 'full' })}</p>
 
-                <h1>{article.title}</h1>
+                <h1><a href={article.url} target='_Blank'>{article.title}</a></h1>
 
                 <div className={styles.content}>
                   {parse(article.content, {

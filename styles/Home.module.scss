@@ -352,11 +352,15 @@
 
       h1 {
         font-weight: 500;
+
+        a {
+          text-decoration: none;
+          color: inherit;
+        }
       }
 
       .content {
-        
-        max-height: 90%;
+        max-height: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
 
