@@ -187,7 +187,7 @@ export default function Home() {
 
                 <p className={styles.date}>{new Date(article.updated).toLocaleString('en-IN', { dateStyle: 'full' })}</p>
 
-                <h1><a href={article.url} target='_Blank'>{article.title}</a></h1>
+                <h1><a href={article.url} target='_Blank' rel="noreferrer">{article.title}</a></h1>
 
                 <div className={styles.content}>
                   {parse(article.content, {
@@ -195,7 +195,7 @@ export default function Home() {
                       if (domNode.tagName === 'img') return <></>
                       if (domNode.tagName === 'br') return <> </>
                       if (domNode.tagName === 'a' && !domNode.childNodes.filter(e => e.name === 'img')) {
-                        return <a {...attributesToProps(domNode.attribs)} target='_Blank'>{domToReact(domNode.childNodes)}</a>
+                        return <a {...attributesToProps(domNode.attribs)} target='_Blank' rel="noreferrer">{domToReact(domNode.childNodes)}</a>
                       }
                     }
                   })}
@@ -207,7 +207,7 @@ export default function Home() {
                       <span key={label}>{label}</span>
                     ))}
                   </div>
-                  <Link href={article.url} target='_Blank'><FiArrowRight /></Link>
+                  <Link href={article.url} target='_Blank' rel="noreferrer"><FiArrowRight /></Link>
                 </div>
               </div>
             ))}
