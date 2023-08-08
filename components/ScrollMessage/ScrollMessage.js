@@ -7,7 +7,7 @@ export default function ScrollMessage ({ onClickMethod }) {
                 <div className={styles.slider}>
                     {[...Array(4).keys()].map((i) => {
                         return (
-                            <p key={i} onClick={onClickMethod}>Intrested candidates having 10+2(Science) with minimum 50% may apply for admission in B.Sc.(Hons.) Community Sc. & B.Sc.(Hons.) FND latest by 27th Feb 2023</p>
+                            <a href='https://news.ccsbikaner.in/2023/07/share-news.html' target='_Blank' rel='noreferrer' key={i}>Submission of abstracts and full length papers in National Conference on “Perspective of Millets in Global Scenario” to be organized during August 25-26, 2023 is now 10th August, 2023</a>
                         )
                     })}
                 </div>
