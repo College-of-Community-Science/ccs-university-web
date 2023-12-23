@@ -1,4 +1,8 @@
+import parse, { domToReact, attributesToProps } from "html-react-parser";
+
 import styles from "./ScrollMessage.module.scss";
+
+import { getRibbonLinks } from "@/utils/ApiUtils";
 
 export default function ScrollMessage({ onClickMethod }) {
 
